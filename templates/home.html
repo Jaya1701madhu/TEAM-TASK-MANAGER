@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Task Manager</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+
+      .container {
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      .btn {
+        padding: 12px 25px;
+        font-size: 18px;
+        border: none;
+        border-radius: 25px;
+        background-color: white;
+        color: #333;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Task Manager 💼</h1>
+      <p>Organize your work. Boost productivity.</p>
+
+      <!-- OPTION 1: Direct to API -->
+      <a href="/api/">
+        <button class="btn">Get Started</button>
+      </a>
+
+      <!-- OPTION 2 (Better): Login -->
+      <!--
+        <a href="/accounts/login/">
+            <button class="btn">Login</button>
+        </a>
+        -->
+    </div>
+  </body>
+</html>

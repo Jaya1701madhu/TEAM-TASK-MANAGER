@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 40px auto;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      th {
+        background: #667eea;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+      }
+
+      tr:hover {
+        background: #f1f5ff;
+      }
+
+      .status {
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+      }
+
+      .pending {
+        background: #ffeaa7;
+        color: #b7791f;
+      }
+
+      .completed {
+        background: #c6f6d5;
+        color: #2f855a;
+      }
+
+      a {
+        text-decoration: none;
+        font-weight: bold;
+        color: #667eea;
+        transition: 0.3s;
+      }
+
+      a:hover {
+        color: #4c51bf;
+      }
+
+      .actions {
+        margin-top: 25px;
+        text-align: center;
+      }
+
+      .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 18px;
+        background: #667eea;
+        color: white;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #5a67d8;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>All Tasks</h2>
+
+      <table>
+        <tr>
+          <th>Title</th>
+          <th>Project</th>
+          <th>Assigned To</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Action</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr>
+          <td>{{ task.title }}</td>
+          <td>{{ task.project.name }}</td>
+          <td>{{ task.assigned_to.username }}</td>
+          <td>
+            <span
+              class="status {% if task.status == 'pending' %}pending{% else %}completed{% endif %}"
+            >
+              {{ task.status }}
+            </span>
+          </td>
+          <td>{{ task.due_date }}</td>
+          <td>
+            {% if task.status == 'pending' %}
+            <a href="/api/update-task/{{ task.id }}/">Mark Completed</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <div class="actions">
+        <a href="/api/create-project/" class="btn">Create Project</a>
+        <a href="/api/create-task/" class="btn">Create Task</a>
+      </div>
+    </div>
+  </body>
+</html>

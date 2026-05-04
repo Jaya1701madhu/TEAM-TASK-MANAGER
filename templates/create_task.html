@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Create Task</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        width: 380px;
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+      }
+
+      textarea {
+        resize: none;
+        height: 80px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #5a67d8;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #667eea;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      a:hover {
+        color: #4c51bf;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Create Task</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Task Title" />
+        <textarea name="description" placeholder="Description"></textarea>
+        <input type="date" name="due_date" />
+        <input type="number" name="project_id" placeholder="Project ID" />
+        <input type="number" name="user_id" placeholder="Assign User ID" />
+        <button type="submit">Create Task</button>
+      </form>
+
+      <a href="/api/dashboard/">Go to Dashboard</a>
+    </div>
+  </body>
+</html>
