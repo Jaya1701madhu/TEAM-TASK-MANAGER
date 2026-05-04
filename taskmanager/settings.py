@@ -15,11 +15,9 @@ SECRET_KEY = os.environ.get(
 )
 
 DEBUG = False
-
 ALLOWED_HOSTS = [
     ".railway.app",
-    "127.0.0.1",
-    "localhost"
+    "*"
 ]
 
 
@@ -34,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'api',
 ]
@@ -145,3 +142,8 @@ SIMPLE_JWT = {
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app"
 ]
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
