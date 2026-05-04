@@ -33,25 +33,28 @@ def register(request):
 # 🔐 API: LOGIN (FIXED NAME)
 # -------------------------
 @api_view(['POST'])
-@api_view(['POST'])
 def login_api(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+    try:
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-    if not username or not password:
-        return Response({"error": "username and password required"}, status=400)
+        if not username or not password:
+            return Response({"error": "username and password required"}, status=400)
 
-    user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)
 
-    if user is None:
-        return Response({"error": "Invalid credentials"}, status=401)
+        if user is None:
+            return Response({"error": "Invalid credentials"}, status=401)
 
-    refresh = RefreshToken.for_user(user)
+        refresh = RefreshToken.for_user(user)
 
-    return Response({
-        "access": str(refresh.access_token),
-        "refresh": str(refresh)
-    })
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        })
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
 # -------------------------
 # 🌐 LOGIN PAGE (HTML)
 # -------------------------
