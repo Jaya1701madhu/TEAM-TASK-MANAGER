@@ -1,38 +1,54 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as auth_login
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
-from .models import User, Task
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .models import User, Task, Project
+
+
+# -------------------------
+# 🌐 HOME PAGE
+# -------------------------
 def home(request):
     return render(request, 'home.html')
-# 🔐 API: Register
+
+
+# -------------------------
+# 🔐 API: REGISTER
+# -------------------------
 @api_view(['POST'])
 def register(request):
     user = User.objects.create_user(
         username=request.data['username'],
         password=request.data['password'],
-        role=request.data['role']
+        role=request.data.get('role', 'member')
     )
     return Response({'message': 'User created'})
 
 
-# 🔐 API: Login
+# -------------------------
+# 🔐 API: LOGIN (FIXED NAME)
+# -------------------------
 @api_view(['POST'])
-def login(request):
+def login_api(request):
     user = authenticate(
         username=request.data['username'],
         password=request.data['password']
     )
     if user:
         refresh = RefreshToken.for_user(user)
-        return Response({'token': str(refresh.access_token)})
+        return Response({
+            'token': str(refresh.access_token)
+        })
     return Response({'error': 'Invalid credentials'})
 
 
-# 🌐 HTML Login Page
+# -------------------------
+# 🌐 LOGIN PAGE (HTML)
+# -------------------------
 def login_page(request):
     if request.method == 'POST':
         user = authenticate(
@@ -46,29 +62,31 @@ def login_page(request):
     return render(request, 'login.html')
 
 
-# 🌐 Dashboard Page
-from django.utils.timezone import now
-
+# -------------------------
+# 🌐 DASHBOARD
+# -------------------------
 def dashboard_page(request):
     if not request.user.is_authenticated:
         return redirect('login_page')
 
     tasks = Task.objects.all()
 
-    context = {
+    return render(request, 'dashboard.html', {
         "tasks": tasks,
         "total": tasks.count(),
         "completed": tasks.filter(status='completed').count(),
         "pending": tasks.filter(status='pending').count(),
         "overdue": tasks.filter(due_date__lt=now()).count()
-    }
-
-    return render(request, 'dashboard.html', context)
-from .models import Project
+    })
 
 
-# 🌐 Create Project Page
+# -------------------------
+# 🌐 CREATE PROJECT
+# -------------------------
 def create_project_page(request):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
+
     if request.method == 'POST':
         Project.objects.create(
             name=request.POST['name'],
@@ -80,8 +98,13 @@ def create_project_page(request):
     return render(request, 'create_project.html')
 
 
-# 🌐 Create Task Page
+# -------------------------
+# 🌐 CREATE TASK
+# -------------------------
 def create_task_page(request):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
+
     if request.method == 'POST':
         Task.objects.create(
             title=request.POST['title'],
@@ -93,8 +116,17 @@ def create_task_page(request):
         return redirect('dashboard')
 
     return render(request, 'create_task.html')
+
+
+# -------------------------
+# ✅ UPDATE TASK STATUS
+# -------------------------
 def update_task_status(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
+
     task = Task.objects.get(id=id)
     task.status = 'completed'
     task.save()
+
     return redirect('dashboard')
