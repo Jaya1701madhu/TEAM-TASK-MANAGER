@@ -35,8 +35,10 @@ def register(request):
 @api_view(['POST'])
 def login_api(request):
     try:
-        username = request.data.get('username')
-        password = request.data.get('password')
+        data = request.data if request.data else {}
+
+        username = data.get('username')
+        password = data.get('password')
 
         if not username or not password:
             return Response({"error": "username and password required"}, status=400)
