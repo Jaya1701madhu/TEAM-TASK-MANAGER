@@ -14,17 +14,9 @@
 - SQLite
 - HTML/CSS
 
-## 🌐 Live Demo
-
-[Your Railway Link]
-
 ## 📂 GitHub Repo
 
-[Your GitHub Link]
-
-## ▶️ Demo Video
-
-[Drive/YouTube Link]
+https://github.com/Jaya1701madhu/TEAM-TASK-MANAGER.git
 
 ## ⚙️ Setup
 
